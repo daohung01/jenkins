@@ -29,8 +29,14 @@ spec:
         - containerPort: 50000
           name: jenkins-agent
         volumeMounts:
-        - name: jenkins-home
-          mountPath: /var/jenkins_home
-      volumes:
-        - name: jenkins-home
-          emptyDir: {}
+          - name: data
+            mountPath: /var/jenkins_home
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "hostpath"
+      resources:
+        requests:
+          storage: 10Gi
